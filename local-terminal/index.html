@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>STAGHUNT — local toy</title>
+  <meta name="theme-color" content="#0a0705" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0705;
+      --ink: #f6efe3;
+      --muted: #9a8f7c;
+      --gold: #ffb830;
+      --dim: #1a1510;
+      --line: #2a231b;
+      --good: #7dffb3;
+      --bad: #ff6b4a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Mono", ui-monospace, monospace; }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      gap: 28px;
+    }
+    .hero h1 {
+      font-weight: 600;
+      font-size: clamp(2rem, 10vw, 7.5rem);
+      letter-spacing: clamp(0.22rem, 1.3vw, 1rem);
+      text-indent: clamp(0.22rem, 1.3vw, 1rem);
+      line-height: 1;
+    }
+    .hero .sub { color: var(--muted); font-size: 13px; max-width: 42rem; line-height: 1.7; }
+    .warn {
+      border: 1px solid var(--line);
+      background: var(--dim);
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px 14px;
+      max-width: 46rem;
+      line-height: 1.6;
+    }
+    .warn strong { color: var(--gold); font-weight: 600; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    button, .btn {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      font: inherit;
+      font-size: 12px;
+      padding: 8px 14px;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    button:hover, .btn:hover { background: var(--gold); color: var(--bg); text-decoration: none; }
+    button.ghost { border-color: var(--line); color: var(--muted); }
+    button.ghost:hover { border-color: var(--ink); color: var(--bg); background: var(--ink); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    main { max-width: 1180px; margin: 0 auto; padding: 0 20px 80px; }
+    h2 { font-size: 13px; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; margin: 48px 0 16px; }
+    p, li { font-size: 14px; line-height: 1.7; color: var(--ink); }
+    .muted { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      border: 1px solid var(--line);
+      background: var(--dim);
+      padding: 16px;
+      min-height: 100%;
+    }
+    .card h3 { font-size: 14px; margin-bottom: 8px; color: var(--gold); }
+    .card p, .card li { font-size: 12px; color: var(--muted); }
+    .terminal {
+      border: 1px solid var(--line);
+      background: #100c08;
+      padding: 16px;
+    }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+    label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    select, input[type="text"], input[type="number"] {
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font: inherit;
+      font-size: 13px;
+      padding: 7px 10px;
+      min-width: 0;
+    }
+    select { flex: 1; }
+    input[type="number"] { width: 88px; }
+    input[type="text"] { flex: 1; min-width: 140px; }
+    .stat { font-size: 12px; color: var(--muted); }
+    .stat b { color: var(--gold); font-weight: 600; }
+    .pack {
+      font-size: 12px;
+      line-height: 1.6;
+      min-height: 180px;
+      border: 1px dashed var(--line);
+      padding: 12px;
+      white-space: pre-wrap;
+    }
+    .ok { color: var(--good); }
+    .no { color: var(--bad); }
+    .log { font-size: 11px; color: var(--muted); max-height: 140px; overflow: auto; margin-top: 10px; }
+    .toggles { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+    .toggles label { text-transform: none; letter-spacing: 0; cursor: pointer; display: flex; gap: 6px; align-items: center; }
+    footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <h1>STAGHUNT</h1>
+    <p class="sub">Local toy of a coordination terminal. Not <a href="https://www.staghunt.ai/">staghunt.ai</a> (that page is still one word). Not Kaspa core. Not a pin. No wallet. No seed. Nothing leaves this browser.</p>
+    <p class="warn"><strong>Honest:</strong> Intendo Terminal was scheduled July 2026 in a sponsored article. This desk, 20 Sep 2026, found a Vercel stub. This page is a teaching hunt — Rousseau’s game as a button — so the six-pager can be touched without pretending it shipped.</p>
+    <div class="cta">
+      <a class="btn" href="#terminal">Open the pack</a>
+      <a class="btn" href="http://127.0.0.1:8084/staghunt/">Essays (local hashd.ag)</a>
+      <a class="btn" href="https://github.com/STP-KAS/staghunt-grok-review">Grok review</a>
+    </div>
+  </section>
+
+  <main>
+    <h2>Azazel, not Moloch</h2>
+    <p class="muted">Prisoner’s Dilemma: cooperation is not an equilibrium — you need a whip. Stag Hunt: cooperation <em>is</em> an equilibrium, but so is the hare. Both hunters want the stag. The failure is failing to move together. Yonatan calls that demon Azazel: wilderness, no associations. The missing internet layer is binding “I do X if enough others do X.” Cheap talk is Discord. This toy is the shape of an intendo.</p>
+
+    <div class="grid" style="margin-top:20px">
+      <div class="card">
+        <h3>Four axioms (six-pager)</h3>
+        <ol>
+          <li>Coordinated atomicity — the qualifying subset snaps together or not at all.</li>
+          <li>Accumulation opacity — nobody sees how close the bar is.</li>
+          <li>Capital multiplexing — same stake can back several hunts; first snap wins.</li>
+          <li>Composability — one hunt’s output is another hunt’s input.</li>
+        </ol>
+        <p style="margin-top:10px">Live Kaspa has Toccata covenants. It does not have opaque packs, a pack solver, or threshold FHE. This toy fakes 1–3 in JavaScript. That is the point of a toy.</p>
+      </div>
+      <div class="card">
+        <h3>Outside crypto</h3>
+        <p>Oxford Q&amp;A (local file <code>yonaharvqa.mp4</code>, not Harvard): AI agents are <em>more</em> desperate clients of coordination than humans. Humans have tradition and social pressure. Agents have none. They will not rally “workers of the world.” They can still aggregate preferences through a binding primitive.</p>
+        <p style="margin-top:8px">Same game: a newsroom leaving a platform, a shop changing hours, a strike threshold, a streaming switch, two models agreeing to work the same task. Token launches are one stag. They are not the category.</p>
+      </div>
+    </div>
+
+    <h2 id="terminal">Intendo terminal (local)</h2>
+    <div class="terminal">
+      <div class="row">
+        <label>Stag</label>
+        <select id="hunt"></select>
+        <button class="ghost" id="newHunt">New stag</button>
+      </div>
+      <p class="stat" id="huntBlurb"></p>
+      <div class="toggles">
+        <label><input type="checkbox" id="opacity" checked /> Opacity (axiom 2) — hide the count</label>
+        <label><input type="checkbox" id="multi" /> Multiplex this stake onto the other live stag</label>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <input type="text" id="who" placeholder="name (anon is fine)" />
+        <input type="number" id="thr" min="1" value="3" title="I join if at least N others including me are in" />
+        <input type="number" id="cap" min="1" value="10" title="stake units (toy)" />
+        <button id="join">Sign intendo</button>
+        <button class="ghost" id="leave">Revoke mine</button>
+        <button id="solve">Scan pack</button>
+      </div>
+      <p class="stat">Threshold = “I move if this many of us move.” Capital is a toy unit. Solver = greatest subset where every member’s threshold is met. That is the monotone fixed point from the six-pager, without FHE.</p>
+      <div class="grid" style="margin-top:14px">
+        <div>
+          <p class="stat">Pack</p>
+          <div class="pack" id="pack">—</div>
+        </div>
+        <div>
+          <p class="stat">State</p>
+          <div class="pack" id="state">—</div>
+        </div>
+      </div>
+      <div class="log" id="log"></div>
+    </div>
+
+    <h2>What this is not</h2>
+    <p class="muted">Not a raise. Not a Kaspa transaction. Not thFHE. Not designated-verifier proofs. Not Intendo Terminal. The live domain still renders one word. If Yonatan ships a hunt tx, this toy becomes a museum label. Until then it is the only pack you can form on this desk.</p>
+
+    <footer>
+      Desk toy for <a href="https://github.com/STP-KAS/staghunt-grok-review">STP-KAS/staghunt-grok-review</a>.
+      Essays clone: <a href="http://127.0.0.1:8084/">127.0.0.1:8084</a> from <a href="https://github.com/hashdag/hashdag.github.io">hashdag/hashdag.github.io</a> <code>ffabfd4</code>.
+      Primary: <a href="https://hashd.ag/staghunt/">hashd.ag/staghunt</a>.
+      Experimental only. Not a product. No wallet inject. Never a seed.
+    </footer>
+  </main>
+
+<script>
+const HUNTS0 = [
+  {
+    id: "agents",
+    title: "Agent swarm — same task, same hour",
+    blurb: "Beyond crypto. Models will not sing the Internationale. They can still refuse to work a job unless N other agents also lock the same job. Oxford Q&A: agents are easier to trap in the hare equilibrium than humans.",
+    outside: true
+  },
+  {
+    id: "hours",
+    title: "High-street hours — we all open Sunday or none of us do",
+    blurb: "Beyond crypto. Shopkeepers already want the stag. Moving alone is a dead street. Each sets a private N.",
+    outside: true
+  },
+  {
+    id: "leave",
+    title: "Leave the app everyone hates",
+    blurb: "Network-effect trap from the six-pager. Migrate if enough of the graph migrates. Cheap talk is a group chat. Binding is the pack.",
+    outside: true
+  },
+  {
+    id: "stream",
+    title: "Subscribe to a new shelf if the shelf exists",
+    blurb: "Six-pager streaming example, stripped of culture war: demand is real, the cold start is the hunt. Entrepreneurs cannot see rants as revenue until the snap.",
+    outside: true
+  },
+  {
+    id: "lp",
+    title: "LP migrates only if the pool is not empty",
+    blurb: "On-crypto cousin. Capital stays productive until a subset’s floors are co-satisfied. Multiplexing: same stake can back two destinations; first snap consumes it.",
+    outside: false
+  }
+];
+
+const KEY = "staghunt-local-v1";
+const state = load();
+
+function load() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (raw && Array.isArray(raw.hunts) && Array.isArray(raw.intendos)) return raw;
+  } catch {}
+  return { hunts: HUNTS0.map(h => ({...h})), intendos: [], log: [] };
+}
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+const $ = id => document.getElementById(id);
+function log(msg) {
+  const t = new Date().toISOString().slice(11, 19);
+  state.log.unshift(`[${t}] ${msg}`);
+  state.log = state.log.slice(0, 40);
+  $("log").textContent = state.log.join("\n");
+  save();
+}
+
+function fillHunts() {
+  const sel = $("hunt");
+  const cur = sel.value;
+  sel.innerHTML = state.hunts.map(h => `<option value="${h.id}">${h.title}</option>`).join("");
+  if (cur && state.hunts.some(h => h.id === cur)) sel.value = cur;
+}
+
+function currentHunt() {
+  return state.hunts.find(h => h.id === $("hunt").value) || state.hunts[0];
+}
+
+function liveIntendos(huntId) {
+  return state.intendos.filter(i => i.huntId === huntId && !i.revoked && !i.consumed);
+}
+
+/** Greatest subset S of count-threshold intendos: drop anyone with t_i > |S|, repeat. */
+function solve(list) {
+  let S = list.slice();
+  let changed = true;
+  while (changed) {
+    changed = false;
+    const n = S.length;
+    const next = S.filter(i => i.thr <= n);
+    if (next.length !== S.length) { S = next; changed = true; }
+  }
+  return S;
+}
+
+function render() {
+  const h = currentHunt();
+  $("huntBlurb").innerHTML = `<b>${h.outside ? "OUTSIDE CRYPTO" : "CRYPTO COUSIN"}</b> — ${h.blurb}`;
+  const live = liveIntendos(h.id);
+  const opacity = $("opacity").checked;
+  const S = solve(live);
+  const snap = S.length > 0 && S.length === live.length || S.length > 0 && live.every(i => S.includes(i));
+  // snap if a non-empty qualifying subset exists
+  const canSnap = S.length > 0;
+
+  if (opacity) {
+    $("pack").textContent = live.length === 0
+      ? "pack is empty (this much is visible: zero is not a secret)"
+      : "pack is opaque.\nnobody — not you, not the operator — sees the count.\nthat is axiom 2. the solver still runs locally in this toy;\non a real stack this would be thFHE, which Kaspa does not have.";
+  } else {
+    $("pack").textContent = live.length === 0
+      ? "no intendos"
+      : live.map(i => `• ${i.who}  t≥${i.thr}  stake=${i.cap}${i.multi ? "  [multiplex]" : ""}`).join("\n");
+  }
+
+  let st = `stag: ${h.title}\nlive signatures: ${opacity ? "hidden" : live.length}\nqualifying subset: ${opacity ? "hidden until scan/snap" : (canSnap ? S.length + " (fixed point)" : "none")}\n`;
+  if (!opacity && canSnap) {
+    st += `members: ${S.map(i => i.who).join(", ")}\n`;
+    st += S.length === live.length ? "status: READY TO HUNT (whole pack)\n" : "status: READY (subset; remainder waits for a later hunt)\n";
+  } else if (!opacity) {
+    st += "status: HARE — not enough mutual thresholds\n";
+  } else {
+    st += "status: unknown by design\n";
+  }
+  $("state").innerHTML = canSnap && !opacity ? `<span class="ok">${st}</span>` : st;
+  $("log").textContent = (state.log || []).join("\n");
+}
+
+$("hunt").addEventListener("change", render);
+$("opacity").addEventListener("change", render);
+
+$("join").onclick = () => {
+  const h = currentHunt();
+  const who = ($("who").value.trim() || ("anon-" + Math.random().toString(16).slice(2, 6)));
+  const thr = Math.max(1, parseInt($("thr").value, 10) || 1);
+  const cap = Math.max(1, parseInt($("cap").value, 10) || 1);
+  const multi = $("multi").checked;
+  const row = { id: Date.now() + "-" + Math.random().toString(16).slice(2, 6), huntId: h.id, who, thr, cap, multi, revoked: false, consumed: false };
+  state.intendos.push(row);
+  if (multi) {
+    const other = state.hunts.find(x => x.id !== h.id);
+    if (other) {
+      state.intendos.push({ ...row, id: row.id + "-m", huntId: other.id });
+      log(`${who} multiplexed stake ${cap} onto "${other.title}" — first snap consumes it (toy)`);
+    }
+  }
+  log(`${who} signed "${h.title}" t≥${thr} stake=${cap}`);
+  save(); render();
+};
+
+$("leave").onclick = () => {
+  const who = $("who").value.trim();
+  if (!who) { log("type the name to revoke"); return; }
+  let n = 0;
+  for (const i of state.intendos) {
+    if (i.who === who && !i.revoked && !i.consumed) { i.revoked = true; n++; }
+  }
+  log(n ? `${who} revoked ${n} intendo(s)` : `no live intendo for ${who}`);
+  save(); render();
+};
+
+$("solve").onclick = () => {
+  const h = currentHunt();
+  const live = liveIntendos(h.id);
+  const S = solve(live);
+  const hide = $("opacity").checked;
+  if (S.length === 0) {
+    log(hide ? "scan: no qualifying subset (still opaque to bystanders; you asked the solver)" : "scan: hare equilibrium — nobody’s threshold is internally met");
+    if (hide) {
+      $("state").innerHTML = `<span class="no">scan complete\nqualifying subset: 0\nstatus: HARE\nopacity does not hide the result of a hunt. it hides the approach.</span>`;
+    }
+    return;
+  }
+  // consume multiplex copies
+  const names = new Set(S.map(i => i.who));
+  for (const i of state.intendos) {
+    if (S.includes(i) || (i.multi && names.has(i.who) && !i.revoked)) i.consumed = true;
+  }
+  log(`HUNT SNAPS on "${h.title}" — ${S.length} move together: ${S.map(i => i.who).join(", ")}. remainder stays packed for a later hunt.`);
+  save();
+  $("opacity").checked = false;
+  render();
+  $("state").innerHTML = `<span class="ok">HUNT\n${S.length} agents moved atomically.\n${S.map(i => i.who + " (t≥" + i.thr + ")").join("\n")}\n\nThis was a browser event. No Kaspa tx. No FHE. The six-pager’s snap is this shape on real rails.</span>`;
+};
+
+$("newHunt").onclick = () => {
+  const title = prompt("Name the stag (one sentence).");
+  if (!title) return;
+  const id = "u-" + Date.now().toString(16);
+  state.hunts.push({ id, title, blurb: "User stag. Same rules. Local only.", outside: true });
+  save(); fillHunts(); $("hunt").value = id; render();
+  log(`posted stag: ${title}`);
+};
+
+fillHunts();
+render();
+if (!state.log.length) log("local pack online. sign an intendo. opacity on. this is not staghunt.ai.");
+</script>
+</body>
+</html>

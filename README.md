@@ -45,7 +45,7 @@ Not primary: [coordmarket.com](https://coordmarket.com/) · [intendo.info](https
 | Staghunt is a Kaspa pin | **No.** Master file dropped it on 14 Sep 2026. Keep it dropped. |
 | “The raise is already the product” | **Unverified.** No public intendo-raise this desk could sign, inspect, or fail. |
 
-Local host this pass: [http://127.0.0.1:8084/](http://127.0.0.1:8084/) serves a clone of the 6 Apr 2026 `site/hashdag` tree. See [LOCAL.md](LOCAL.md).
+Local host this pass: [http://127.0.0.1:8086/](http://127.0.0.1:8086/) is a **staghunt.ai-shaped teaching terminal** (same black/gold/IBM Plex Mono; hunt, pack, opacity, snap). It is a toy, not Intendo Terminal. Essays clone: [http://127.0.0.1:8084/](http://127.0.0.1:8084/). See [LOCAL.md](LOCAL.md).
 
 ## What
 

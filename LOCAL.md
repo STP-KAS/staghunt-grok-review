@@ -1,6 +1,18 @@
 # Local host (this machine, not GitHub)
 
-The product at staghunt.ai is a 3 KB stub. There is nothing to run but the **essay site**.
+The live product at [staghunt.ai](https://www.staghunt.ai/) is a 3 KB stub (one word). This desk hosts two local things. Neither talks to Kaspa. Neither is Intendo Terminal.
+
+## Coordination toy — http://127.0.0.1:8086/
+
+A staghunt.ai-shaped page: same black, gold, IBM Plex Mono. Under the title it is a **teaching hunt**: sign intendos, hide the count (axiom 2), run the monotone pack solver, snap atomically. Default stags are mostly *outside* crypto (agent swarm, shop hours, leaving an app, a shelf that only exists if it is subscribed). LP migration is the crypto cousin.
+
+```
+python -m http.server 8086 --bind 127.0.0.1 --directory C:\Users\Remco\staghunt-grok\staghunt-ai-local
+```
+
+Source in this repo: [`local-terminal/index.html`](local-terminal/index.html). Browser-only. localStorage. No wallet, no seed, no inject. Opacity is a checkbox, not thFHE.
+
+## Essay mirror — http://127.0.0.1:8084/
 
 This Windows desk cloned Yonatan’s public generator output:
 
