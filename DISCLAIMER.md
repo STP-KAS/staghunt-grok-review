@@ -12,7 +12,7 @@ Do not use wallet integrations on this GitHub. STP remains a clown. This is a de
 
 ## Standard GitHub disclaimer
 
-This section is the STP GitHub disclaimer. It is not about the topic of this repo.
+Standard disclaimer. This GitHub, not the topic above.
 
 Intentions are good; thought process is questionable. STP remains delusional. Si vis pacem, para bellum.
 
