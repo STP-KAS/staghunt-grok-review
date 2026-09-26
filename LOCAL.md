@@ -7,7 +7,7 @@ The live product at [staghunt.ai](https://www.staghunt.ai/) is a 3 KB stub (one 
 A staghunt.ai-shaped page: same black, gold, IBM Plex Mono. Under the title it is a **teaching hunt**: sign intendos, hide the count (axiom 2), run the monotone pack solver, snap atomically. Default stags are mostly *outside* crypto (agent swarm, shop hours, leaving an app, a shelf that only exists if it is subscribed). LP migration is the crypto cousin.
 
 ```
-python -m http.server 8086 --bind 127.0.0.1 --directory C:\Users\Remco\staghunt-grok\staghunt-ai-local
+python -m http.server 8086 --bind 127.0.0.1 --directory C:\Users\<user>\staghunt-grok\staghunt-ai-local
 ```
 
 Source in this repo: [`local-terminal/index.html`](local-terminal/index.html). Browser-only. localStorage. No wallet, no seed, no inject. Opacity is a checkbox, not thFHE.
@@ -17,7 +17,7 @@ Source in this repo: [`local-terminal/index.html`](local-terminal/index.html). B
 This Windows desk cloned Yonatan’s public generator output:
 
 ```
-C:\Users\Remco\staghunt-grok\hashdag.github.io
+C:\Users\<user>\staghunt-grok\hashdag.github.io
   origin: https://github.com/hashdag/hashdag.github.io
   HEAD:   ffabfd467a1c9f1de2dcf9329cd10d1389bf2b68  (6 Apr 2026)
 ```
@@ -25,7 +25,7 @@ C:\Users\Remco\staghunt-grok\hashdag.github.io
 Serve the built site (already generated under `site/hashdag`):
 
 ```
-python -m http.server 8084 --bind 127.0.0.1 --directory C:\Users\Remco\staghunt-grok\hashdag.github.io\site\hashdag
+python -m http.server 8084 --bind 127.0.0.1 --directory C:\Users\<user>\staghunt-grok\hashdag.github.io\site\hashdag
 ```
 
 Then:
@@ -45,7 +45,7 @@ This is a **read-only mirror** of a public GitHub tree. It is not Intendo Termin
 Rebuild from source if you want to confirm `build.js`:
 
 ```
-node C:\Users\Remco\staghunt-grok\hashdag.github.io\build.js
+node C:\Users\<user>\staghunt-grok\hashdag.github.io\build.js
 ```
 
 `hashdag-technical-spec.docx` in that repo describes the CMS (entries.json + weights). It is not a coordination-market spec.
